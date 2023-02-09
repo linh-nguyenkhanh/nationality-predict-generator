@@ -1,10 +1,24 @@
 import React, { useState } from "react";
 import { useGlobalContext } from "./context";
-import { MagnifyingGlass } from "react-loader-spinner";
-import "./index.css";
+
+// import LoadingContainer from "./components/LoadingContainer";
+// import ResultBox from "./components/ResultBox";
+// import { SearchName } from "./components/SearchName";
 
 function App() {
-  const { handleChange } = useGlobalContext();
+  const { name, setName, fetchCountryAPI } = useGlobalContext();
+  const [nameIs, setNameIs] = useState("");
+  // typing input
+  const handleChange = (event) => {
+    setNameIs(event.target.value);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (nameIs) {
+      setName(nameIs);
+    }
+  };
 
   return (
     <div className="flex h-screen items-center justify-center bg-hero bg-cover bg-no-repeat ">
@@ -25,22 +39,16 @@ function App() {
           className="lg:text-2xl md:text-xl sm:text-sm text-left drop-shadow-lg border-8 rounded border-white  px-2 pr-6 w-[70%]"
         />
         <div>
-          <button className="outline outline-offset-4 outline-white-500  lg:text-xl md:text-lg sm:text-md text-white py-3 px-5 border-4 rounded-full bg-orange-400 hover:bg-amber-700 hover:text-white my-4">
-            Country?
+          <button
+            onSubmit={fetchCountryAPI}
+            className="outline outline-offset-4 outline-white-500  lg:text-xl md:text-lg sm:text-md text-white py-3 px-5 border-4 rounded-full bg-orange-400 hover:bg-amber-700 hover:text-white my-4"
+          >
+            Country ?
           </button>
         </div>
-        <div class="loading-container">
-          <MagnifyingGlass
-            visible={true}
-            height="100"
-            width="100"
-            ariaLabel="MagnifyingGlass-loading"
-            wrapperStyle={{}}
-            wrapperClass="MagnifyingGlass-wrapper"
-            glassColor="#c0efff"
-            color="#e15b64"
-          />
-        </div>
+        {/* <SearchName />
+        <LoadingContainer />
+        <ResultBox /> */}
       </div>
     </div>
   );

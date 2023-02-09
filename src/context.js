@@ -1,34 +1,31 @@
-import React, { useContext, useState, useEffect, createContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import axios from "axios";
-
 const AppContext = React.createContext();
-
-const nationalityUrl = "https://api.nationalize.io/?name=michael";
-const countryToNameUrl = "https://restcountries.com/v3.1/alpha/VN";
+const BASE_URL = "https://restcountries.com/v3.1/alpha/VN";
+// const nationalityUrl = "https://restcountries.com/v3.1/name";
+// const countryToNameUrl = "https://restcountries.com/v3.1/alpha/{code}";
 
 const AppProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
-  const [typeName, setTypeName] = useState("");
-  const [predictCountry, setPredictCountry] = useState("");
+  const [name, setName] = useState("");
+  const [country, setCountry] = useState();
+  // const [showResult, setShowResult] = useState(true);
 
   //fetch API
-  const fetchName = async () => {
-    setLoading(true);
-    try {
-      const { data } = axios.get(nationalityUrl);
-      if (data.country[0].country_id) {
-        setTypeName(data.country[0].country_id);
-        console.log(data.country[0].country_id);
-      }
-    } catch {}
+  const fetchCountryAPI = () => {
+    axios.get(BASE_URL).then((response) => {
+      console.log(response.data[0].name);
+    });
   };
 
-  const handleChange = (event) => {
-    setTypeName(event.target.value);
-  };
+  useEffect(() => {
+    fetchCountryAPI(name);
+  }, [name]);
+
+  // clicking
 
   return (
-    <AppContext.Provider value={(loading, handleChange)}>
+    <AppContext.Provider value={(name, setName, loading, setLoading)}>
       {children}
     </AppContext.Provider>
   );
